@@ -5,13 +5,10 @@
 var del = require('del');
 var gulp = require('gulp');
 var header = require('gulp-header');
-var source = require('vinyl-source-stream');
 var rename = require('gulp-rename');
-var watchify = require('watchify');
-var browserify = require('browserify');
 var gutil = require('gulp-util');
 var babel = require('gulp-babel');
-var assign = require('lodash.assign');
+var umd = require('gulp-wrap-umd');
 
 
 /*
@@ -28,14 +25,10 @@ var banner = ['/**',
     ' */',
     ''].join('\n');
 
-
-var customOpts = {
-    entries: ['./src/index.js'],
-    debug: true
+var umdOptions = {
+    exports: 'Observant',
+    namespace: 'Observant'
 };
-var opts = assign({}, watchify.args, customOpts);
-//var b = watchify(browserify(opts));
-
 
 // Clear
 gulp.task('clear', function () {
@@ -43,25 +36,18 @@ gulp.task('clear', function () {
 });
 
 
-
-
 // Javascript
 gulp.task('js', function () {
-    //return b.bundle()
-    //    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    //    .pipe(source('observant'))
-    //    .pipe(header(banner, {pkg: pkg}))       // add header banner
-    //    .pipe(gulp.dest(distDir + '/'));
-
     gulp.src('./src/index.js')
-        .pipe(babel())
+        .pipe(babel()).on('error', gutil.log.bind(gutil, 'Babel Error'))
+        .pipe(umd(umdOptions))
         .pipe(header(banner, {pkg: pkg}))       // add header banner
         .pipe(rename({basename: 'observant'}))
         .pipe(gulp.dest(distDir + '/'));
 });
 
 // Watch
-gulp.task('watch', ['js'], function() {
+gulp.task('watch', ['js'], function () {
     gulp.watch('./src/**/*', ['js']);
 });
 

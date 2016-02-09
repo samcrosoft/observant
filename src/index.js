@@ -9,8 +9,8 @@ class Observant {
     }
 
     observe(event, observer) {
-        if (!this.observers['event']) {
-            this.observers['event'] = []
+        if (!this.observers[event]) {
+            this.observers[event] = []
         }
         this.observers[event].push(observer);
         return this;
@@ -63,4 +63,4 @@ class Observant {
 
 }
 
-export default Observant;
+//export default Observant;

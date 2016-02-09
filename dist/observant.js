@@ -4,18 +4,25 @@
  * @link https://github.com/samcrosoft/observant
  * @license MIT
  */
+
+(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory(require, exports, module);
+  } else {
+    root.Observant = factory();
+  }
+}(this, function(require, exports, module) {
+
 /**
  * Created by Adebola on 08/02/2016.
  */
 "use strict";
 
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Observant = (function () {
     function Observant() {
@@ -24,17 +31,19 @@ var Observant = (function () {
         this.observers = {};
     }
 
+    //export default Observant;
+
     _createClass(Observant, [{
-        key: 'observe',
+        key: "observe",
         value: function observe(event, observer) {
-            if (!this.observers['event']) {
-                this.observers['event'] = [];
+            if (!this.observers[event]) {
+                this.observers[event] = [];
             }
             this.observers[event].push(observer);
             return this;
         }
     }, {
-        key: 'ignore',
+        key: "ignore",
         value: function ignore(event, observer) {
             var index = -1;
             if (1 == arguments.length) {
@@ -52,7 +61,7 @@ var Observant = (function () {
             return this;
         }
     }, {
-        key: 'notify',
+        key: "notify",
         value: function notify(event, data) {
             var observers = this.observers[event];
             if (!observers) {
@@ -83,6 +92,6 @@ var Observant = (function () {
 
     return Observant;
 })();
+return Observant;
 
-exports['default'] = Observant;
-module.exports = exports['default'];
+}));
